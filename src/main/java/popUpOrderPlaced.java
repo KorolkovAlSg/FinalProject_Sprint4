@@ -2,11 +2,11 @@ import org.openqa.selenium.By;
 import org.openqa.selenium.WebDriver;
 import org.openqa.selenium.support.ui.WebDriverWait;
 
-public class OrderPlaced {
+public class popUpOrderPlaced {
     private WebDriver driver;
 
     // Конструктор класса
-    public OrderPlaced(WebDriver driver) {
+    public popUpOrderPlaced(WebDriver driver) {
         this.driver = driver;
     }
 

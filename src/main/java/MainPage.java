@@ -5,6 +5,8 @@ import org.openqa.selenium.support.ui.WebDriverWait;
 import org.openqa.selenium.JavascriptExecutor;
 import java.util.List;
 
+import static org.junit.Assert.assertEquals;
+
 // Класс главной страницы
 public class MainPage {
 
@@ -13,60 +15,77 @@ public class MainPage {
     // Локатор для элементов списка "Вопросы о важном"
     private By listOfQuestions = By.className("accordion__item");
 
-    // Локатор для кнопки "заказать" в шапке страницы
-    private By topButtonOrder = By.className("Button_Button__ra12g");
-
-    // Локатор для кнопки "заказать" по центру страницы
-    private By centerButtonOrder = By.xpath(".//div[@class='Home_FinishButton__1_cWm']/button[text()='Заказать']");
-
     // Локатор для кнопки закрытия окна куки "да все привыкли"
     private By cookieButton = By.id("rcc-confirm-button");
 
     // Локатор для заголовка страницы формы "для кого самокат"
     private By headerTitle = By.xpath(".//div[contains(@class, 'Order_Header__BZXOb') and text()='Для кого самокат']");
-
+    
+    // Локатор кнопки заказать в шапке
+    private By topButtonOrder = By.xpath(".//button[contains(@class,'Button_Button__ra12') and text()='Заказать']");
+    
+    // Локатор кнопки заказать по центру
+    private By centerButtonOrder = By.xpath(".//button[contains(@class,'Button_Button__ra12g Button_Middle__1CSJM') and text()='Заказать']");
+    
     // Конструктор класса
     public MainPage(WebDriver driver) {
         this.driver = driver;
     }
 
-    // Метод для нажатия на кнопку "заказать" в шапке страницы
-    public void clickTopButtonOrder() {
-        driver.findElement(topButtonOrder).click();
-    }
-
-    // Метод для нажатия на кнопку "заказать" по центру страницы
-    public void clickCenterButtonOrder() {
-        WebElement button = driver.findElement(centerButtonOrder);
+    // Метод нажимает на кнопку "заказать" и проверяет загрузку страницы "для кого самокат"
+    public void clickButtonOrder(String buttonOrder){
+        WebElement button = null;
+        
+        if (buttonOrder.equals("topButton")){
+            button = driver.findElement(topButtonOrder);
+        } else if (buttonOrder.equals("centerButton")){
+            button = driver.findElement(centerButtonOrder);
+        }
+        // скроллить до элемента
         ((JavascriptExecutor)driver).executeScript("arguments[0].scrollIntoView();", button);
+
         button.click();
+
+        WebElement titleOrderPage = driver.findElement(headerTitle);
+        waitLoadElements(titleOrderPage);
     }
 
-    // Метод ожидает загрузки страницы с формой "для кого самокат"
-    public void waitLoadHeaderTitleData(){
-        new WebDriverWait(driver, 10).until(driver -> (driver.findElement(headerTitle).getText() != null
-                && !driver.findElement(headerTitle).getText().isEmpty()
+    // Метод ожидает загрузки элемента
+    public void waitLoadElements(WebElement element){
+        new WebDriverWait(driver, 10).until(driver -> (element.getText() != null
+                && !element.getText().isEmpty()
         ));
     }
 
-    // Метод закрывает окно подтверждения куки, скроллит страницу до последнего элемента списка,
-    // нажимает на каждый пункт списка в разделе "вопросы о важном" и ожидает появления видимого и непустого текста
-    public void checkOperDDList() {
+    // Метод закрывает окно подтверждения куки, скроллит страницу до нужного элемента списка с вопросами,
+    // проверяет наличие текста и сам текст в разделе "вопросы о важном"
+    public void checkQuestionBlock(String accordionHeadingId, String questionText, String accordionPanelId,String hiddenText){
 
+        // закрыть куки
         driver.findElement(cookieButton).click();
-        List<WebElement> listOfQuElements = driver.findElements(listOfQuestions);
 
-        ((JavascriptExecutor)driver).executeScript("arguments[0].scrollIntoView();", listOfQuElements.get(listOfQuElements.size()-1));
+        // записать элемент "блок с вопросом" (accordion__heading-N) по id в переменную
+        WebElement accordionHeading = driver.findElement(By.xpath(String.format(".//div[contains(@id, '%s')]", accordionHeadingId)));
 
-        int i = 0;
-        while (i < listOfQuElements.size()) {
-            listOfQuElements.get(i).click();
-            String locator = String.format(".//div[contains(@id, 'accordion__panel-%s') and not(@hidden)]", i);
-            new WebDriverWait(driver, 1).until(driver -> (driver.findElement(By.xpath(locator)).getText()
-                    !=null && !driver.findElement(By.xpath(locator)).getText().isEmpty()
-            ));
-            i = i + 1;
-        }
+        // скроллить до элемента accordionHeading
+        ((JavascriptExecutor)driver).executeScript("arguments[0].scrollIntoView();", accordionHeading);
+
+        // сравнить текст в элементе accordion__heading-N с требуемым
+        assertEquals(String.format("Текст в блоке [.//div[contains(@id, '%s')] не совпадает с требуемым текстом - %s",
+                accordionHeadingId, questionText), questionText, accordionHeading.getText());
+
+        // нажать на стрелочку/элемент accordion__heading-N/"блок с вопросом"
+        accordionHeading.click();
+
+        // записать элемент "блок с ответом" (accordion__panel-N) по n-ому id в переменную
+        WebElement accordionPanel = driver.findElement(By.xpath(String.format(".//div[contains(@id, '%s') and not(@hidden)]", accordionPanelId)));
+
+        // проверить загрузился/появился ли текст с ответом под элементом accordion__heading-N/не пустой ли блок
+        waitLoadElements(accordionPanel);
+
+        // сравнить текст в элементе accordion__panel-N с требуемым
+        assertEquals(String.format("Текст в блоке [.//div[contains(@id, '%s')] не совпадает с требуемым текстом - %s",
+                accordionPanelId, hiddenText), hiddenText, accordionPanel.getText());
     }
 
 }

@@ -1,10 +1,13 @@
+import constans.Constants;
+import io.github.bonigarcia.wdm.WebDriverManager;
 import org.junit.After;
+import org.junit.Before;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.junit.runners.Parameterized;
 import org.openqa.selenium.WebDriver;
 import org.openqa.selenium.chrome.ChromeDriver;
-import org.openqa.selenium.firefox.FirefoxDriver;
+//import org.openqa.selenium.firefox.FirefoxDriver;
 
 @RunWith(Parameterized.class)
 public class OrderingScooter {
@@ -12,6 +15,7 @@ public class OrderingScooter {
     //private WebDriver driver = new FirefoxDriver();
     private WebDriver driver = new ChromeDriver();
 
+    private final String buttonOrderCssLocator;
     private final String placeholderName;
     private final String clientName;
     private final String placeholderSurname;
@@ -26,7 +30,8 @@ public class OrderingScooter {
     private final String colorScooter;
     private final String commentForCour;
 
-    public OrderingScooter(String placeholderName, String clientName, String placeholderSurname, String clientSurname, String placeholderDeliveryAddress, String deliveryAddress, String metroSt, String placeholderPhoneNumber, String phoneNumber, String dateSand, String daysRent, String colorScooter, String commentForCour) {
+    public OrderingScooter(String buttonOrderCssLocator, String placeholderName, String clientName, String placeholderSurname, String clientSurname, String placeholderDeliveryAddress, String deliveryAddress, String metroSt, String placeholderPhoneNumber, String phoneNumber, String dateSand, String daysRent, String colorScooter, String commentForCour) {
+        this.buttonOrderCssLocator = buttonOrderCssLocator;
         this.placeholderName = placeholderName;
         this.clientName = clientName;
         this.placeholderSurname = placeholderSurname;
@@ -42,35 +47,35 @@ public class OrderingScooter {
         this.commentForCour = commentForCour;
     }
 
-    @Parameterized.Parameters
+    @Parameterized.Parameters(name = "Тестовые данные: {2} {4} {6} {7} {9} {10} {11} {12} {13}")
     public static Object[][] getLabelInfo() {
         return new Object[][]{
-                {"Имя", "Анатолий", "Фамилия", "Анатолиев", "Адрес: куда привезти заказ", "Улица Анатолиева 12",
+                {"topButton","Имя", "Анатолий", "Фамилия", "Анатолиев", "Адрес: куда привезти заказ", "Улица Анатолиева 12",
                         "Андроновка", "Телефон: на него позвонит курьер", "792222222222", "11/11/2011","семеро суток", "Black", ""},
-                {"Имя", "Яна", "Фамилия", "Янович", "Адрес: куда привезти заказ", "Улица Яновая 1",
+                {"topButton","Имя", "Яна", "Фамилия", "Янович", "Адрес: куда привезти заказ", "Улица Яновая 1",
+                        "Площадь Революции", "Телефон: на него позвонит курьер", "792222222222", "07/11/2015","сутки", "Grey", "Есть комментарий"},
+                {"centerButton","Имя", "Анатолий", "Фамилия", "Анатолиев", "Адрес: куда привезти заказ", "Улица Анатолиева 12",
+                        "Андроновка", "Телефон: на него позвонит курьер", "792222222222", "11/11/2011","семеро суток", "Black", ""},
+                {"centerButton","Имя", "Яна", "Фамилия", "Янович", "Адрес: куда привезти заказ", "Улица Яновая 1",
                         "Площадь Революции", "Телефон: на него позвонит курьер", "792222222222", "07/11/2015","сутки", "Grey", "Есть комментарий"},
         };
+    }
+    @Before
+    public void startUp() {
+        WebDriverManager.chromedriver().setup();
+
+        // переход на страницу тестового приложения
+        driver.get(Constants.URLFORTESTS);
     }
 
     @Test
     public void orderingScooterTest() {
-        // переход на страницу тестового приложения
-        driver.get("https://qa-scooter.praktikum-services.ru/");
 
         // Создать экземпляр класса главной страницы
         MainPage mainPage = new MainPage(driver);
 
-        // Нажать на кнопку "заказать" в шапке страницы
-        mainPage.clickTopButtonOrder();
-
-        // Дождаться появления формы "для кого самокат"
-        mainPage.waitLoadHeaderTitleData();
-
-        // Вернуться на главную страницу
-        driver.get("https://qa-scooter.praktikum-services.ru/");
-
-        // Нажать на кнопку "заказать" по центру страницы
-        mainPage.clickCenterButtonOrder();
+        // Нажать на кнопку "заказать" и дождаться загрузки страницы "для кого самокат"
+        mainPage.clickButtonOrder(buttonOrderCssLocator);
 
         // Создать экземпляр класса страницы с формой "для кого самокат"
         OrderPage orderPage = new OrderPage(driver);
@@ -92,9 +97,10 @@ public class OrderingScooter {
         rentPage.clickButtonOrder();
 
         // Создать экземпляр класса окна подтверждения заказа
-        OrderPlaced orderPlaced = new OrderPlaced(driver);
+        popUpOrderPlaced popUpOrderPlaced = new popUpOrderPlaced(driver);
 
-        orderPlaced.placedOrder();
+        // Подтвердить заказ
+        popUpOrderPlaced.placedOrder();
 
     }
 
