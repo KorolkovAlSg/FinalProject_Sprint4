@@ -5,7 +5,7 @@ import org.openqa.selenium.support.ui.WebDriverWait;
 import org.openqa.selenium.JavascriptExecutor;
 import java.util.List;
 
-// Класс главной страницы
+// Класс главной страницы //
 public class MainPage {
 
     private WebDriver driver;
@@ -22,6 +22,9 @@ public class MainPage {
     // Локатор для кнопки закрытия окна куки "да все привыкли"
     private By cookieButton = By.id("rcc-confirm-button");
 
+    // Локатор для заголовка страницы формы "для кого самокат"
+    private By headerTitle = By.xpath(".//div[contains(@class, 'Order_Header__BZXOb') and text()='Для кого самокат']");
+
     // Конструктор класса
     public MainPage(WebDriver driver) {
         this.driver = driver;
@@ -37,6 +40,13 @@ public class MainPage {
         WebElement button = driver.findElement(centerButtonOrder);
         ((JavascriptExecutor)driver).executeScript("arguments[0].scrollIntoView();", button);
         button.click();
+    }
+
+    // Метод ожидает загрузки страницы с формой "для кого самокат"
+    public void waitLoadHeaderTitleData(){
+        new WebDriverWait(driver, 10).until(driver -> (driver.findElement(headerTitle).getText() != null
+                && !driver.findElement(headerTitle).getText().isEmpty()
+        ));
     }
 
     // Метод закрывает окно подтверждения куки, скроллит страницу до последнего элемента списка,

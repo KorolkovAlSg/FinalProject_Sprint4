@@ -9,7 +9,7 @@ import org.openqa.selenium.firefox.FirefoxDriver;
 @RunWith(Parameterized.class)
 public class OrderingScooter {
 
-    //private WebDriver driver = new FirefoxDriver();
+    //private WebDriver driver = new FirefoxDriver(); //
     private WebDriver driver = new ChromeDriver();
 
     private final String placeholderName;
@@ -62,6 +62,9 @@ public class OrderingScooter {
 
         // Нажать на кнопку "заказать" в шапке страницы
         mainPage.clickTopButtonOrder();
+
+        // Дождаться появления формы "для кого самокат"
+        mainPage.waitLoadHeaderTitleData();
 
         // Вернуться на главную страницу
         driver.get("https://qa-scooter.praktikum-services.ru/");
