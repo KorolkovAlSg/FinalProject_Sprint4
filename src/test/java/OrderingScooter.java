@@ -63,6 +63,9 @@ public class OrderingScooter {
         // Нажать на кнопку "заказать" в шапке страницы
         mainPage.clickTopButtonOrder();
 
+        // Дождаться появления формы "для кого самокат"
+        mainPage.waitLoadHeaderTitleData();
+
         // Вернуться на главную страницу
         driver.get("https://qa-scooter.praktikum-services.ru/");
 
