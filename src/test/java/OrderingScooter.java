@@ -9,7 +9,7 @@ import org.openqa.selenium.firefox.FirefoxDriver;
 @RunWith(Parameterized.class)
 public class OrderingScooter {
 
-    //private WebDriver driver = new FirefoxDriver();
+    //private WebDriver driver = new FirefoxDriver(); //
     private WebDriver driver = new ChromeDriver();
 
     private final String placeholderName;

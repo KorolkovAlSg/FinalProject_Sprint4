@@ -5,7 +5,7 @@ import org.openqa.selenium.support.ui.WebDriverWait;
 import org.openqa.selenium.JavascriptExecutor;
 import java.util.List;
 
-// Класс главной страницы
+// Класс главной страницы //
 public class MainPage {
 
     private WebDriver driver;

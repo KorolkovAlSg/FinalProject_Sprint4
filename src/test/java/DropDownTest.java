@@ -13,7 +13,7 @@ public class DropDownTest {
 
     @Test
     public void startActivity(){
-        // переход на страницу тестового приложения
+        // переход на страницу тестового приложения //
         driver.get("https://qa-scooter.praktikum-services.ru/");
 
         // создан объект класса главной страницы

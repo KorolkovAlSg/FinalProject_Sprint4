@@ -27,7 +27,7 @@ public class OrderPlaced {
                 && !driver.findElement(orderPlaced).getText().isEmpty()
         ));
     }
-    // общий метод
+    // общий метод //
     public void placedOrder(){
         clickButtonOrder();
         waitForLoadProfileData();
