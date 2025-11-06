@@ -17,9 +17,7 @@ public class MainPage {
     private By topButtonOrder = By.className("Button_Button__ra12g");
 
     // Локатор для кнопки "заказать" по центру страницы
-    private By centerButtonOrder = By.xpath(".//button" +
-            "[contains(@class='Button_Button__ra12g Button_Middle__1CSJM')" +
-            " and text()='Заказать']");
+    private By centerButtonOrder = By.xpath(".//div[@class='Home_FinishButton__1_cWm']/button[text()='Заказать']");
 
     // Локатор для кнопки закрытия окна куки "да все привыкли"
     private By cookieButton = By.id("rcc-confirm-button");
@@ -36,7 +34,9 @@ public class MainPage {
 
     // Метод для нажатия на кнопку "заказать" по центру страницы
     public void clickCenterButtonOrder() {
-        driver.findElement(centerButtonOrder).click();
+        WebElement button = driver.findElement(centerButtonOrder);
+        ((JavascriptExecutor)driver).executeScript("arguments[0].scrollIntoView();", button);
+        button.click();
     }
 
     // Метод закрывает окно подтверждения куки, скроллит страницу до последнего элемента списка,

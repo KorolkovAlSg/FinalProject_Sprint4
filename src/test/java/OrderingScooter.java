@@ -59,8 +59,14 @@ public class OrderingScooter {
         // Создать экземпляр класса главной страницы
         MainPage mainPage = new MainPage(driver);
 
-        // Нажать на кнопку "заказать в шапке страницы"
+        // Нажать на кнопку "заказать" в шапке страницы
         mainPage.clickTopButtonOrder();
+
+        // Вернуться на главную страницу
+        driver.get("https://qa-scooter.praktikum-services.ru/");
+
+        // Нажать на кнопку "заказать" по центру страницы
+        mainPage.clickCenterButtonOrder();
 
         // Создать экземпляр класса страницы с формой "для кого самокат"
         OrderPage orderPage = new OrderPage(driver);
