@@ -1,0 +1,102 @@
+import org.junit.After;
+import org.junit.Test;
+import org.junit.runner.RunWith;
+import org.junit.runners.Parameterized;
+import org.openqa.selenium.WebDriver;
+import org.openqa.selenium.chrome.ChromeDriver;
+import org.openqa.selenium.firefox.FirefoxDriver;
+
+@RunWith(Parameterized.class)
+public class OrderingScooter {
+
+    //private WebDriver driver = new FirefoxDriver();
+    private WebDriver driver = new ChromeDriver();
+
+    private final String placeholderName;
+    private final String clientName;
+    private final String placeholderSurname;
+    private final String clientSurname;
+    private final String placeholderDeliveryAddress;
+    private final String deliveryAddress;
+    private final String placeholderPhoneNumber;
+    private final String phoneNumber;
+    private final String metroSt;
+    private final String dateSand;
+    private final String daysRent;
+    private final String colorScooter;
+    private final String commentForCour;
+
+    public OrderingScooter(String placeholderName, String clientName, String placeholderSurname, String clientSurname, String placeholderDeliveryAddress, String deliveryAddress, String metroSt, String placeholderPhoneNumber, String phoneNumber, String dateSand, String daysRent, String colorScooter, String commentForCour) {
+        this.placeholderName = placeholderName;
+        this.clientName = clientName;
+        this.placeholderSurname = placeholderSurname;
+        this.clientSurname = clientSurname;
+        this.placeholderDeliveryAddress = placeholderDeliveryAddress;
+        this.deliveryAddress = deliveryAddress;
+        this.metroSt = metroSt;
+        this.placeholderPhoneNumber = placeholderPhoneNumber;
+        this.phoneNumber = phoneNumber;
+        this.dateSand = dateSand;
+        this.daysRent = daysRent;
+        this.colorScooter = colorScooter;
+        this.commentForCour = commentForCour;
+    }
+
+    @Parameterized.Parameters
+    public static Object[][] getLabelInfo() {
+        return new Object[][]{
+                {"Имя", "Анатолий", "Фамилия", "Анатолиев", "Адрес: куда привезти заказ", "Улица Анатолиева 12",
+                        "Андроновка", "Телефон: на него позвонит курьер", "792222222222", "11/11/2011","семеро суток", "Black", ""},
+                {"Имя", "Яна", "Фамилия", "Янович", "Адрес: куда привезти заказ", "Улица Яновая 1",
+                        "Площадь Революции", "Телефон: на него позвонит курьер", "792222222222", "07/11/2015","сутки", "Grey", "Есть комментарий"},
+        };
+    }
+
+    @Test
+    public void orderingScooterTest() {
+        // переход на страницу тестового приложения
+        driver.get("https://qa-scooter.praktikum-services.ru/");
+
+        // Создать экземпляр класса главной страницы
+        MainPage mainPage = new MainPage(driver);
+
+        // Нажать на кнопку "заказать" в шапке страницы
+        mainPage.clickTopButtonOrder();
+
+        // Вернуться на главную страницу
+        driver.get("https://qa-scooter.praktikum-services.ru/");
+
+        // Нажать на кнопку "заказать" по центру страницы
+        mainPage.clickCenterButtonOrder();
+
+        // Создать экземпляр класса страницы с формой "для кого самокат"
+        OrderPage orderPage = new OrderPage(driver);
+
+        // Заполнить форму "для кого самокат" данными
+        orderPage.fillForm(placeholderName, clientName, placeholderSurname, clientSurname,
+                placeholderDeliveryAddress, deliveryAddress, metroSt, placeholderPhoneNumber, phoneNumber);
+
+        // Нажать кнопку "далее"
+        orderPage.clickNextButton();
+
+        // Создать экземпляр класса страницы с формой "про аренду"
+        RentPage rentPage = new RentPage(driver);
+
+        // Заполнить форму "про аренду" данными
+        rentPage.fillForm(dateSand, daysRent, colorScooter, commentForCour);
+
+        // Нажать кнопку "заказать"
+        rentPage.clickButtonOrder();
+
+        // Создать экземпляр класса окна подтверждения заказа
+        OrderPlaced orderPlaced = new OrderPlaced(driver);
+
+        orderPlaced.placedOrder();
+
+    }
+
+    @After
+    public void terdown(){
+        driver.quit();
+    }
+}
