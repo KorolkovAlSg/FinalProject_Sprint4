@@ -29,7 +29,7 @@ public class DropDownTest {
         this.hiddenText = hiddenText;
     }
 
-    @Parameterized.Parameters (name = "Тестовые данные: {1} {3}")
+    @Parameterized.Parameters (name = "Вопрос в блоке: {1}, Ответ после нажатия: {3}")
     public static Object[][] getAccordionInfo(){
         return new Object[][]{
                 {"accordion__heading-0","Сколько это стоит? И как оплатить?","accordion__panel-0","Сутки — 400 рублей. Оплата курьеру — наличными или картой."},

@@ -47,7 +47,7 @@ public class OrderingScooter {
         this.commentForCour = commentForCour;
     }
 
-    @Parameterized.Parameters(name = "Тестовые данные: {2} {4} {6} {7} {9} {10} {11} {12} {13}")
+    @Parameterized.Parameters(name = "Кнопка Заказа: {0}, Имя: {2}, Фамилия: {4}, Адрес: {6}, Станция Метро: {7}, Телефон: {9}, Дата доставки: {10}, Срок аренды: {11}, Цвет самоката: {12}, Комментарий курьеру: {13}")
     public static Object[][] getLabelInfo() {
         return new Object[][]{
                 {"topButton","Имя", "Анатолий", "Фамилия", "Анатолиев", "Адрес: куда привезти заказ", "Улица Анатолиева 12",
