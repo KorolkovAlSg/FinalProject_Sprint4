@@ -49,9 +49,9 @@ public class RentPage {
 
     // Метод для выбора цвета самоката формы "про аренду"
     public void selectColor(String color){
-        if (Objects.equals(color, "Gray")){
+        if (Objects.equals(color, "Grey")){
             driver.findElement(checkBoxGrey).click();
-        } driver.findElement(checkBoxBlack).click();
+        } else driver.findElement(checkBoxBlack).click();
     }
 
     // Метод для заполнения поля "комментарий для курьера" формы "про аренду"
