@@ -46,8 +46,8 @@ public class DropDownTest {
     public void startUp() {
         WebDriverManager.chromedriver().setup();
 
-        driver = new ChromeDriver();
-        //driver = new FirefoxDriver();
+        //driver = new ChromeDriver();
+        driver = new FirefoxDriver();
 
         // переход на страницу тестового приложения
         driver.get(Constants.URLFORTESTS);

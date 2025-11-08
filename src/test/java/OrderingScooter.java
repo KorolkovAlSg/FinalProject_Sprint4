@@ -7,14 +7,14 @@ import org.junit.runner.RunWith;
 import org.junit.runners.Parameterized;
 import org.openqa.selenium.WebDriver;
 import org.openqa.selenium.chrome.ChromeDriver;
-//import org.openqa.selenium.firefox.FirefoxDriver;
+import org.openqa.selenium.firefox.FirefoxDriver;
 
 @RunWith(Parameterized.class)
 public class OrderingScooter {
 
     private WebDriver driver;
 
-    private final String buttonOrderCssLocator;
+    private final String buttonOrderLocator;
     private final String placeholderName;
     private final String clientName;
     private final String placeholderSurname;
@@ -29,8 +29,8 @@ public class OrderingScooter {
     private final String colorScooter;
     private final String commentForCour;
 
-    public OrderingScooter(String buttonOrderCssLocator, String placeholderName, String clientName, String placeholderSurname, String clientSurname, String placeholderDeliveryAddress, String deliveryAddress, String metroSt, String placeholderPhoneNumber, String phoneNumber, String dateSand, String daysRent, String colorScooter, String commentForCour) {
-        this.buttonOrderCssLocator = buttonOrderCssLocator;
+    public OrderingScooter(String buttonOrderLocator, String placeholderName, String clientName, String placeholderSurname, String clientSurname, String placeholderDeliveryAddress, String deliveryAddress, String metroSt, String placeholderPhoneNumber, String phoneNumber, String dateSand, String daysRent, String colorScooter, String commentForCour) {
+        this.buttonOrderLocator = buttonOrderLocator;
         this.placeholderName = placeholderName;
         this.clientName = clientName;
         this.placeholderSurname = placeholderSurname;
@@ -63,8 +63,8 @@ public class OrderingScooter {
     public void startUp() {
         WebDriverManager.chromedriver().setup();
 
-        driver = new ChromeDriver();
-        //driver = new FirefoxDriver();
+        //driver = new ChromeDriver();
+        driver = new FirefoxDriver();
 
         // переход на страницу тестового приложения
         driver.get(Constants.URLFORTESTS);
@@ -77,7 +77,7 @@ public class OrderingScooter {
         MainPage mainPage = new MainPage(driver);
 
         // Нажать на кнопку "заказать" и дождаться загрузки страницы "для кого самокат"
-        mainPage.clickButtonOrder(buttonOrderCssLocator);
+        mainPage.clickButtonOrder(buttonOrderLocator);
 
         // Создать экземпляр класса страницы с формой "для кого самокат"
         OrderPage orderPage = new OrderPage(driver);
