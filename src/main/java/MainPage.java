@@ -3,6 +3,8 @@ import org.openqa.selenium.WebDriver;
 import org.openqa.selenium.WebElement;
 import org.openqa.selenium.support.ui.WebDriverWait;
 import org.openqa.selenium.JavascriptExecutor;
+
+import java.time.Duration;
 import java.util.List;
 
 import static org.junit.Assert.assertEquals;
@@ -11,9 +13,6 @@ import static org.junit.Assert.assertEquals;
 public class MainPage {
 
     private WebDriver driver;
-
-    // Локатор для элементов списка "Вопросы о важном"
-    private By listOfQuestions = By.className("accordion__item");
 
     // Локатор для кнопки закрытия окна куки "да все привыкли"
     private By cookieButton = By.id("rcc-confirm-button");
@@ -52,7 +51,7 @@ public class MainPage {
 
     // Метод ожидает загрузки элемента
     public void waitLoadElements(WebElement element){
-        new WebDriverWait(driver, 10).until(driver -> (element.getText() != null
+        new WebDriverWait(driver, Duration.ofSeconds(10)).until(driver -> (element.getText() != null
                 && !element.getText().isEmpty()
         ));
     }

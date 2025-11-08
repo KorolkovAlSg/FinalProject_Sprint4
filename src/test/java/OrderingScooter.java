@@ -12,8 +12,7 @@ import org.openqa.selenium.chrome.ChromeDriver;
 @RunWith(Parameterized.class)
 public class OrderingScooter {
 
-    //private WebDriver driver = new FirefoxDriver();
-    private WebDriver driver = new ChromeDriver();
+    private WebDriver driver;
 
     private final String buttonOrderCssLocator;
     private final String placeholderName;
@@ -63,6 +62,9 @@ public class OrderingScooter {
     @Before
     public void startUp() {
         WebDriverManager.chromedriver().setup();
+
+        driver = new ChromeDriver();
+        //driver = new FirefoxDriver();
 
         // переход на страницу тестового приложения
         driver.get(Constants.URLFORTESTS);

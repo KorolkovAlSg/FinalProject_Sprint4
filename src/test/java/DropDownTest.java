@@ -1,7 +1,7 @@
 import constans.Constants;
 import org.openqa.selenium.WebDriver;
 import org.openqa.selenium.chrome.ChromeDriver;
-//import org.openqa.selenium.firefox.FirefoxDriver;
+import org.openqa.selenium.firefox.FirefoxDriver;
 import io.github.bonigarcia.wdm.WebDriverManager;
 
 import org.junit.Before;
@@ -14,8 +14,7 @@ import org.junit.runners.Parameterized;
 @RunWith(Parameterized.class)
 public class DropDownTest {
 
-    private WebDriver driver = new ChromeDriver();
-    //private WebDriver driver = new FirefoxDriver();
+    private WebDriver driver;
 
     private final String accordionHeadingId;
     private final String questionText;
@@ -46,6 +45,9 @@ public class DropDownTest {
     @Before
     public void startUp() {
         WebDriverManager.chromedriver().setup();
+
+        driver = new ChromeDriver();
+        //driver = new FirefoxDriver();
 
         // переход на страницу тестового приложения
         driver.get(Constants.URLFORTESTS);

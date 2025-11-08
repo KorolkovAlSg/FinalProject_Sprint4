@@ -2,7 +2,10 @@ import org.openqa.selenium.By;
 import org.openqa.selenium.WebDriver;
 import org.openqa.selenium.support.ui.WebDriverWait;
 
+import java.time.Duration;
+
 public class popUpOrderPlaced {
+
     private WebDriver driver;
 
     // Конструктор класса
@@ -23,7 +26,7 @@ public class popUpOrderPlaced {
 
     // метод ожидания загрузки окна "заказ оформлен"
     public void waitForLoadProfileData() {
-        new WebDriverWait(driver, 10).until(driver -> (driver.findElement(orderPlaced).getText() != null
+        new WebDriverWait(driver, Duration.ofSeconds(10)).until(driver -> (driver.findElement(orderPlaced).getText() != null
                 && !driver.findElement(orderPlaced).getText().isEmpty()
         ));
     }
